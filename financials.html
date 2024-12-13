@@ -224,7 +224,7 @@
             // DERPRECATED
             //document.addEventListener('onGqPopupClose', (e) => {
                 //console.log('GQ Popup close', e);
-                //window.location.href = 'file:///Users/darshan/Documents/Loan_Form_Subbmitted.html';  // Replace with the actual success page URL` 
+                //window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/Loan_Form_Subbmitted.html';  // Replace with the actual success page URL` 
 
             //});
             document.addEventListener('onGqFormSubmit', (e) => {
@@ -237,7 +237,7 @@
             // eventError = onGqActivity
             document.addEventListener('onGqError', (e) => {
                 console.log('GQ Error = ', e);
-                window.location.href = 'PaymentFail.html';  // Replace with the actual success page URL
+                window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/PaymentFail.html';  // Replace with the actual success page URL
             });
 
             document.addEventListener('onGqSuccess', (e) => {
@@ -245,7 +245,7 @@
                 console.log(JSON.stringify(e));
                 var eventTY = e['gqData']['data']['event'];
                 if (eventTY == 'dt.payment.captured') {
-                    window.location.href = 'success.html';
+                    window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/success.html';
 
                 }
             });
