@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #dc3545;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #dc3545;
+            text-align: center;
+        }
+        .fail-message {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #dc3545;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        .retry-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 150px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .retry-btn:hover {
+            background-color: #c82333;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Payment Failed</h1>
+</header>
+
+<div class="container">
+    <div class="fail-message">
+        <p>Unfortunately, your payment could not be processed. Please try again or contact support if the issue persists.</p>
+    </div>
+
+    <h2>Payment Details</h2>
+    <table>
+        <tr>
+            <th>Payment Code</th>
+            <td>GQDT-U9I9Q98A6WE</td> <!-- Replace with actual payment code -->
+        </tr>
+        <tr>
+            <th>Payment Status</th>
+            <td>Failed</td> <!-- Replace with actual status -->
+        </tr>
+        <tr>
+            <th>Payment Amount</th>
+            <td>80000</td> <!-- Replace with actual amount -->
+        </tr>
+        <tr>
+            <th>Payment Method</th>
+            <td>GrayQuest PG </td> <!-- Replace with actual method -->
+        </tr>
+        <tr>
+            <th>Payment Date</th>
+            <td>2024-09-09</td> <!-- Replace with actual date -->
+        </tr>
+        <tr>
+            <th>Failure Message</th>
+            <td>Transaction declined by the User.</td> <!-- Replace with actual failure message -->
+        </tr>
+    </table>
+
+    <button class="retry-btn" onclick="retryPayment()">Retry Payment</button>
+</div>
+
+<footer>
+    <p>&copy; 2024 Student Portal. All rights reserved.</p>
+</footer>
+
+<script>
+    function retryPayment() {
+        // Redirect back to the payment page
+        window.location.href = "financials.html";  // Replace with actual payment page URL
+    }
+</script>
+
+</body>
+</html>

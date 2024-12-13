@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Fees</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f8f8;
+        }
+
+        .pay-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pay-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Student Academic Fees</h1>
+    </header>
+    <div class="container">
+        <!-- Student Information Section -->
+        <h2>Student Information</h2>
+        <table class="student-info">
+            <tr>
+                <th>Student Name</th>
+                <td>GrayQuest Demo Student</td> <!-- Replace with actual student name -->
+            </tr>
+            <tr>
+                <th>Student ID</th>
+                <td>GQ_DEMO_1234</td> <!-- Replace with actual student ID -->
+            </tr>
+            <tr>
+                <th>Course</th>
+                <td>Bachelor of Science in Computer Science</td> <!-- Replace with actual course -->
+            </tr>
+            <tr>
+                <th>Year of Study</th>
+                <td>3rd Year</td> <!-- Replace with actual year -->
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>GrayQuest.demo@example.com</td> <!-- Replace with actual email -->
+            </tr>
+            <tr>
+                <th>Contact Number</th>
+                <td>+91 7977692684</td> <!-- Replace with actual contact number -->
+            </tr>
+        </table>
+        <div class="container">
+            <h2>Fee Details</h2>
+            <table>
+                <tr>
+                    <th>Fee Description</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td>Tuition Fee</td>
+                    <td>50000</td>
+                </tr>
+                <tr>
+                    <td>Library Fee</td>
+                    <td>10000</td>
+                </tr>
+                <tr>
+                    <td>Lab Fee</td>
+                    <td>15000</td>
+                </tr>
+                <tr>
+                    <td>Sports Fee</td>
+                    <td>5000</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>80000</strong></td>
+                </tr>
+            </table>
+
+            <button id="gq-button" class="gq-button">Pay Fees</button>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Student Portal. All rights reserved.</p>
+        </footer>
+        <script>
+            (function (g, q, s, d, k) {
+                var loader = function () {
+                    var gq, id = "gqerp-jssdk"; if (q.getElementById(id)) { return; }
+                    gq = q.createElement(s); gq.async = true; gq.type = "text/javascript";
+                    gq.src = d; var sc = q.getElementsByTagName("script")[0];
+                    sc.parentNode.insertBefore(gq, sc);
+                };
+                g.addEventListener ? g.addEventListener(
+                    "load", loader, false) : g.attachEvent("onload", loader);
+            })(window, document, "script", "https://erp-sdk-stage.graydev.tech/v1.1/gqerp-sdk.min.js?v=latest");
+
+            // Set Options to Initiate Popup
+            document.getElementById('gq-button').onclick = function (e) {
+                GqErpSDK.setOptions({
+                    env: "staging",
+                    auth: {
+                        client_id: 'GQ-2f082e1b-f298-4591-9255-ff1d099ed1b7',
+                client_secret: 'a15de72c-1613-4bb8-9f74-1dd74deadde2',
+                api_key: '43cfb3ca-152f-4b72-832b-bd2e6126a4d7'
+                    },
+                    student_id: "GQ_SUPER_KID_12",
+                    reference_id: "SUPER_KID_ERP34",
+                    pp_config: {
+                slug: 'ggg-gis-epa',
+            },
+                    customer_mobile: "7977692684",
+                    fee_headers: {
+                        "Admission_fee": 80000
+                    },
+                    "student_details": {
+                        "student_first_name": "Shanaya",
+                        "student_middle_name": "Darshan",
+                        "student_last_name": "Singh",
+                        "student_type": "NEW"
+                    },
+                    "customer_details": {
+                        "customer_first_name": "Darshan",
+                        "customer_middle_name": "Subhash",
+                        "customer_last_name": "Singh",
+                        "customer_email": "darshan@gmail.com",
+                        "customer_marital_status": "MARRIED",
+                        "customer_gender": "MALE",
+                        "customer_dob": "1997-05-05",
+                        "customer_employment_type": "SALARIED"
+                    },
+                    "kyc_details": {
+                        "pan_number": "AAAPA0000A"
+                    },
+                    "residential_details": {
+                        "residential_addr_line_1": "A-23, Palace",
+                        "residential_addr_line_2": "Anime World",
+                        "residential_landmark": "Anime",
+                        "residential_type": "RENTED",
+                        "residential_period": "LESS THAN 2 YEARS",
+                        "residential_pincode": "400065",
+                        "residential_city": "Mumbai",
+                        "residential_state": "Maharashtra",
+                        "residential_country": "India"
+                    },
+                    "employment_details": {
+                        "income_type": "SALARIED",
+                        "employer_name": "GrayQuest",
+                        "net_monthly_salary": "123456",
+                        "work_experience": "5-10 YEARS",
+                    },
+
+                    "notes": {
+                        "unique_number": "ecd90e5d-02fb-4150-bb59-2d51800a5477",
+                        "semster_type": "sem1 ,sem2"
+                    }
+
+                });
+                GqErpSDK.render();
+            };
+
+            // DERPRECATED
+            //document.addEventListener('onGqPopupClose', (e) => {
+                //console.log('GQ Popup close', e);
+                //window.location.href = 'file:///Users/darshan/Documents/Loan_Form_Subbmitted.html';  // Replace with the actual success page URL` 
+
+            //});
+            document.addEventListener('onGqFormSubmit', (e) => {
+                console.log('form submit');
+
+            });
+            // RECOMMENDED
+            // eventName = onGqSuccess
+            // eventError = onGqError
+            // eventError = onGqActivity
+            document.addEventListener('onGqError', (e) => {
+                console.log('GQ Error = ', e);
+                window.location.href = 'file:///Users/darshan/Documents/PaymentFail.html';  // Replace with the actual success page URL
+            });
+
+            document.addEventListener('onGqSuccess', (e) => {
+                console.log('GQ SUCCESS = ', e);
+                console.log(JSON.stringify(e));
+                var eventTY = e['gqData']['data']['event'];
+                if (eventTY == 'dt.payment.captured') {
+                    window.location.href = 'file:///Users/darshan/Documents/success.html';
+
+                }
+            });
+
+            document.addEventListener('onGqActivity', (e) => {
+                console.log('GQ ACTIVITY = ', e);
+            });
+
+        </script>
+</body>
+
+</html>
