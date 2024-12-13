@@ -237,7 +237,7 @@
             // eventError = onGqActivity
             document.addEventListener('onGqError', (e) => {
                 console.log('GQ Error = ', e);
-                window.location.href = 'file:///Users/darshan/Documents/PaymentFail.html';  // Replace with the actual success page URL
+                window.location.href = 'PaymentFail.html';  // Replace with the actual success page URL
             });
 
             document.addEventListener('onGqSuccess', (e) => {
@@ -245,7 +245,7 @@
                 console.log(JSON.stringify(e));
                 var eventTY = e['gqData']['data']['event'];
                 if (eventTY == 'dt.payment.captured') {
-                    window.location.href = 'file:///Users/darshan/Documents/success.html';
+                    window.location.href = 'success.html';
 
                 }
             });
