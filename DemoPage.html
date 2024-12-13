@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrayQuest ERP Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        nav {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            display: flex;
+        }
+        .sidebar {
+            width: 20%;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .content {
+            width: 80%;
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin-top: 0;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome To SuperKids ERP Portal</h1>
+</header>
+
+<nav>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#users">Users</a>
+
+    <!-- Redirect to a new "financials.html" page -->
+    <a href="financials.html">Pay Fees Online</a>
+    <a href="#reports">Reports</a>
+    <a href="#settings">Settings</a>
+</nav>
+
+<div class="container">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h3>Modules</h3>
+        <ul>
+            <li><a href="#userManagement">User Management</a></li>
+            <li><a href="#inventory">Inventory</a></li>
+            <li><a href="#sales">Sales</a></li>
+            <li><a href="financials.html">Pay Fees Online(2024-2025)</a></li>
+            <li><a href="#reports">Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content">
+        <div class="card" id="dashboard">
+            <h2>Dashboard</h2>
+            <p>Welcome to the ERP Portal. Use the navigation to explore various modules.</p>
+        </div>
+        <div class="card" id="users">
+            <h2>User Management</h2>
+            <p>Manage users and their roles within the system. Add, edit, or remove users.</p>
+        </div>
+
+        <div class="card" id="financials">
+            <h2>Fee Details </h2>
+            <p>This is where financial reports, invoices, and expenses will be managed. <br>
+            <a href="financials.html" style="color: #007bff;"> Student Fee Details </a>
+            </p>
+        </div>
+
+        <div class="card" id="reports">
+            <h2>Reports</h2>
+            <p>Generate reports on various business operations, including sales, inventory, and financials.</p>
+        </div>
+
+        <div class="card" id="settings">
+            <h2>Settings</h2>
+            <p>Configure system settings, manage notifications, and set preferences.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 ERP System. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
