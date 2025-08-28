@@ -1,152 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrayQuest ERP Portal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #343a40;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        nav {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-around;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        nav a:hover {
-            background-color: #0056b3;
-        }
-        .container {
-            display: flex;
-        }
-        .sidebar {
-            width: 20%;
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
-        .sidebar h3 {
-            margin-top: 0;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar ul li {
-            margin-bottom: 10px;
-        }
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        .content {
-            width: 80%;
-            padding: 20px;
-        }
-        .card {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .card h2 {
-            margin-top: 0;
-        }
-        footer {
-            background-color: #343a40;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Portal • Dashboard</title>
+  <style>
+    :root{
+      --bg:#f7f9fc; --card:#ffffff; --text:#0f172a; --muted:#6b7280;
+      --brand:#007bff; --brand-600:#0056b3; --border:#e5e7eb; --chip:#eef2ff;
+      --shadow:0 10px 30px rgba(2,8,23,.08); --radius:16px; --success:#16a34a; --danger:#dc2626;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+
+    /* Layout */
+    .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    @media (max-width: 980px){.layout{grid-template-columns:1fr}}
+
+    /* Sidebar */
+    .sidebar{background:#0b1220;color:#e5e7eb;position:sticky;top:0;height:100vh;padding:22px 18px;display:flex;flex-direction:column;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+    .brand svg{width:28px;height:28px}
+    .nav{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+    .nav a{display:flex;align-items:center;gap:10px;color:#cbd5e1;text-decoration:none;padding:10px 12px;border-radius:12px}
+    .nav a:hover,.nav a.active{background:rgba(148,163,184,.12);color:#fff}
+    .sidebar .spacer{flex:1}
+    .mini-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+
+    /* Main */
+    .main{padding:22px}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;min-width:220px;box-shadow:var(--shadow)}
+    .search input{border:none;outline:none;width:220px}
+    .profile{display:flex;align-items:center;gap:12px}
+    .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#93c5fd,#d8b4fe);display:grid;place-items:center;color:#0b1220;font-weight:700}
+
+    /* Grid + Cards */
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-5{grid-column:span 5}.col-6{grid-column:span 6}.col-7{grid-column:span 7}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+    @media (max-width: 1100px){.col-3,.col-4,.col-5,.col-6,.col-7,.col-8{grid-column:span 12}}
+
+    .kpi{display:flex;align-items:center;justify-content:space-between}
+    .kpi .value{font-size:28px;font-weight:800}
+    .chip{background:var(--chip);color:var(--brand-600);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
+
+    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--border)}
+    thead th{background:#f8fafc;text-align:left;font-size:13px;color:#475569}
+    tbody tr:last-child td{border-bottom:none}
+
+    .btn{background:var(--brand);color:#fff;padding:10px 14px;border:none;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(0,123,255,.25)}
+    .btn:hover{background:var(--brand-600)}
+    .link{color:var(--brand);text-decoration:none}
+
+    .todo-list{display:flex;flex-direction:column;gap:10px}
+    .todo{display:flex;align-items:center;gap:10px}
+    .todo input{width:18px;height:18px}
+
+    footer{color:var(--muted);text-align:center;margin:20px 0}
+  </style>
 </head>
 <body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3l9 4-9 4-9-4 9-4zm0 8l9 4-9 4-9-4"/></svg>
+        <span>Student Portal</span>
+      </div>
+      <nav class="nav">
+        <a class="active" href="#dashboard">Dashboard</a>
+        <a href="#courses">My Courses</a>
+        <a href="#fees">Fees</a>
+        <a href="#attendance">Attendance</a>
+        <a href="#documents">Documents</a>
+        <a href="#support">Support</a>
+        <a href="#settings">Settings</a>
+      </nav>
+      <div class="spacer"></div>
+      <div class="mini-card">
+        <div class="muted" style="font-size:12px;margin-bottom:6px">Current Term</div>
+        <div style="font-weight:800">Semester VI</div>
+        <div class="chip" style="margin-top:8px;display:inline-block">Status: Active</div>
+      </div>
+    </aside>
 
-<header>
-    <h1>Welcome To SuperKids ERP Portal</h1>
-</header>
-
-<nav>
-    <a href="#dashboard">Dashboard</a>
-    <a href="#users">Users</a>
-
-    <!-- Redirect to a new "financials.html" page -->
-    <a href="financials.html">Pay Fees Online</a>
-    <a href="#reports">Reports</a>
-    <a href="#settings">Settings</a>
-</nav>
-
-<div class="container">
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
-        <h3>Modules</h3>
-        <ul>
-            <li><a href="#userManagement">User Management</a></li>
-            <li><a href="#inventory">Inventory</a></li>
-            <li><a href="#sales">Sales</a></li>
-            <li><a href="financials.html">Pay Fees Online(2024-2025)</a></li>
-            <li><a href="#reports">Reports</a></li>
-        </ul>
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="content">
-        <div class="card" id="dashboard">
-            <h2>Dashboard</h2>
-            <p>Welcome to the ERP Portal. Use the navigation to explore various modules.</p>
+    <!-- Main -->
+    <main class="main">
+      <div class="topbar">
+        <div class="search"><input placeholder="Search courses, fees, documents…"/></div>
+        <div class="profile">
+          <div class="chip" id="greeting">Hello!</div>
+          <div class="avatar">DS</div>
         </div>
-        <div class="card" id="users">
-            <h2>User Management</h2>
-            <p>Manage users and their roles within the system. Add, edit, or remove users.</p>
+      </div>
+
+      <!-- KPI Row -->
+      <section class="grid" style="margin-bottom:12px">
+        <div class="card col-3 kpi">
+          <div><div class="muted">CGPA</div><div class="value">8.7</div></div>
+          <div class="chip">Good</div>
+        </div>
+        <div class="card col-3 kpi">
+          <div><div class="muted">Attendance</div><div class="value">92%</div></div>
+          <div class="chip">This Term</div>
+        </div>
+        <div class="card col-3 kpi">
+          <div><div class="muted">Pending Fees</div><div class="value">₹ <span id="kpi-pending">0</span></div></div>
+          <div class="chip">Live</div>
+        </div>
+        <div class="card col-3 kpi">
+          <div><div class="muted">Credits</div><div class="value">20/24</div></div>
+          <div class="chip">Enrolled</div>
+        </div>
+      </section>
+
+      <!-- Main Content Grid -->
+      <section class="grid">
+        <!-- Timetable / Upcoming -->
+        <div class="card col-7" id="dashboard">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h2>Today’s Schedule</h2>
+            <span class="chip" id="today-label"></span>
+          </div>
+          <table>
+            <thead><tr><th>Time</th><th>Course</th><th>Room</th><th>Lecturer</th></tr></thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
         </div>
 
-        <div class="card" id="financials">
-            <h2>Fee Details </h2>
-            <p>This is where financial reports, invoices, and expenses will be managed. <br>
-            <a href="financials.html" style="color: #007bff;"> Student Fee Details </a>
-            </p>
+        <!-- Announcements -->
+        <div class="card col-5">
+          <h2>Announcements</h2>
+          <ul id="news" style="margin:0;padding-left:18px;line-height:1.6">
+            <li>Mid-term exams begin on <strong>16 Sep</strong>.</li>
+            <li>Hackathon registrations close this Friday.</li>
+            <li>Library will be open on Sunday from 10am–4pm.</li>
+          </ul>
         </div>
 
-        <div class="card" id="reports">
-            <h2>Reports</h2>
-            <p>Generate reports on various business operations, including sales, inventory, and financials.</p>
+        <!-- My Courses -->
+        <div class="card col-8" id="courses">
+          <h2>My Courses</h2>
+          <table>
+            <thead><tr><th>Course</th><th>Code</th><th>Faculty</th><th>Progress</th></tr></thead>
+            <tbody>
+              <tr><td>Data Structures</td><td>CS301</td><td>Prof. Rao</td><td>78%</td></tr>
+              <tr><td>Operating Systems</td><td>CS305</td><td>Dr. Kapoor</td><td>64%</td></tr>
+              <tr><td>Database Systems</td><td>CS309</td><td>Prof. Sharma</td><td>82%</td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="card" id="settings">
-            <h2>Settings</h2>
-            <p>Configure system settings, manage notifications, and set preferences.</p>
+        <!-- Quick Tasks -->
+        <div class="card col-4">
+          <h2>Checklist</h2>
+          <div class="todo-list" id="todo-list">
+            <label class="todo"><input type="checkbox"> Submit OS lab assignment</label>
+            <label class="todo"><input type="checkbox"> Pay transport fee</label>
+            <label class="todo"><input type="checkbox"> Upload KYC document</label>
+          </div>
+          <button class="btn" id="clear-todo" style="margin-top:10px">Clear Completed</button>
         </div>
-    </div>
-</div>
 
-<footer>
-    <p>&copy; 2024 ERP System. All rights reserved.</p>
-</footer>
+        <!-- Fees -->
+        <div class="card col-6" id="fees">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h2>Fees</h2>
+            <span class="chip">Due this month</span>
+          </div>
+          <table>
+            <thead><tr><th>Head</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Tuition (Sem 2)</td><td>₹ 30,000</td><td>Pending</td></tr>
+              <tr><td>Hostel (Sem 2)</td><td>₹ 10,000</td><td>Pending</td></tr>
+              <tr><td>Transport (Sem 2)</td><td>₹ 10,000</td><td>Pending</td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex;gap:10px;margin-top:10px"><a class="btn" href="financials.html">Pay Now</a><a class="link" href="financials.html">View breakdown →</a></div>
+        </div>
 
+        <!-- Student Info -->
+        <div class="card col-6">
+          <h2>Profile</h2>
+          <table>
+            <tbody>
+              <tr><th style="width:180px">Student Name</th><td>GrayQuest Demo Student</td></tr>
+              <tr><th>Student ID</th><td id="student-id-cell"></td></tr>
+              <tr><th>Course</th><td>B.Sc. Computer Science</td></tr>
+              <tr><th>Year of Study</th><td>3rd Year</td></tr>
+              <tr><th>Email</th><td>grayquest.demo@example.com</td></tr>
+              <tr><th>Contact</th><td><input id="contact-number" placeholder="+91 98XXXXXXXX"/></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>© 2025 Student Portal. All rights reserved.</footer>
+    </main>
+  </div>
+
+  <script>
+    // Greeting + date label
+    const greet = () => {
+      const h = new Date().getHours();
+      return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+    }
+    document.getElementById('greeting').textContent = greet();
+
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const d = new Date();
+    document.getElementById('today-label').textContent = `${days[d.getDay()]} • ${d.toLocaleDateString()}`;
+
+    // Simple timetable demo
+    const timetable = {
+      1:[['09:00','Data Structures','C-203','Prof. Rao'],['11:00','Operating Systems','Lab-2','Dr. Kapoor'],['14:00','Econometrics','B-101','Prof. Iyer']], // Mon
+      2:[['09:30','Database Systems','C-105','Prof. Sharma'],['12:30','Math for CS','A-201','Dr. Bose']],
+      3:[['10:00','Computer Networks','C-307','Prof. Menon'],['13:00','Operating Systems','Lab-2','Dr. Kapoor']],
+      4:[['09:00','Data Structures','C-203','Prof. Rao'],['11:00','Database Systems','C-105','Prof. Sharma']],
+      5:[['10:00','Computer Networks','C-307','Prof. Menon']],
+      6:[],0:[]
+    };
+    const body = document.getElementById('schedule-body');
+    (timetable[d.getDay()]||[]).forEach(r=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td>`;
+      body.appendChild(tr);
+    });
+    if(!body.children.length){
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="4" style="text-align:center;color:#6b7280">No classes today</td>';
+      body.appendChild(tr);
+    }
+
+    // Checklist persistence
+    const todoKey = 'student-dashboard-todos';
+    const list = document.getElementById('todo-list');
+    // Save
+    list.addEventListener('change',()=>{
+      const states = Array.from(list.querySelectorAll('input[type="checkbox"]')).map(cb=>cb.checked);
+      localStorage.setItem(todoKey, JSON.stringify(states));
+    });
+    // Load
+    const saved = JSON.parse(localStorage.getItem(todoKey)||'[]');
+    Array.from(list.querySelectorAll('input[type="checkbox"]')).forEach((cb,i)=> cb.checked = !!saved[i]);
+    document.getElementById('clear-todo').addEventListener('click',()=>{
+      Array.from(list.querySelectorAll('input[type="checkbox"]')).forEach(cb=>{ if(cb.checked) cb.checked=false; });
+      list.dispatchEvent(new Event('change'));
+    });
+
+    // Dynamic IDs per refresh
+    function __rand(n=6){ return Math.floor(Math.random()*10**n).toString().padStart(n,'0'); }
+    function __uid(prefix){
+      const t = new Date();
+      const y = t.getFullYear(), m = String(t.getMonth()+1).padStart(2,'0'), d = String(t.getDate()).padStart(2,'0');
+      const base = (window.crypto && crypto.getRandomValues)
+        ? Array.from(crypto.getRandomValues(new Uint32Array(2))).map(x=>x.toString(36)).join('').slice(0,6)
+        : __rand(6);
+      return `${prefix}-${y}${m}${d}-${base}`;
+    }
+    const STUDENT_ID = __uid('STU');
+    const REFERENCE_ID = `REF-${Date.now()}-${__rand(4)}`;
+    document.getElementById('student-id-cell').textContent = STUDENT_ID;
+
+    // Pending fees KPI (demo sync with fees table)
+    const pending = 30000 + 10000 + 10000;
+    document.getElementById('kpi-pending').textContent = pending.toLocaleString('en-IN');
+  </script>
 </body>
 </html>
