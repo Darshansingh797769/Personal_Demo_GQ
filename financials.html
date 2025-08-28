@@ -1,281 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Academic Fees</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Portal • Fees Dashboard</title>
+  <style>
+    :root{
+      --bg:#f7f9fc;          /* overall background */
+      --card:#ffffff;         /* surfaces */
+      --text:#1f2937;         /* primary text */
+      --muted:#6b7280;        /* secondary text */
+      --brand:#2563eb;        /* primary brand */
+      --brand-600:#1e40af;    /* darker brand */
+      --success:#16a34a;
+      --danger:#dc2626;
+      --warning:#d97706;
+      --chip:#eef2ff;
+      --border:#e5e7eb;
+      --shadow:0 10px 30px rgba(2,8,23,.08);
+      --radius:16px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
 
-        header {
-            background-color: #343a40;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+    /* Layout */
+    .layout{display:grid;grid-template-columns: 260px 1fr; min-height:100vh}
+    @media (max-width: 900px){.layout{grid-template-columns:1fr}}
 
-        header h1 {
-            margin: 0;
-        }
+    /* Sidebar */
+    .sidebar{background:#0b1220;color:#e5e7eb;position:sticky;top:0;height:100vh;padding:22px 18px;display:flex;flex-direction:column;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+    .brand svg{width:28px;height:28px}
+    .nav{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+    .nav a{display:flex;align-items:center;gap:10px;color:#cbd5e1;text-decoration:none;padding:10px 12px;border-radius:12px}
+    .nav a svg{width:18px;height:18px}
+    .nav a.active,.nav a:hover{background:rgba(148,163,184,.12);color:#fff}
+    .sidebar .spacer{flex:1}
+    .mini-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
 
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    /* Main */
+    .main{padding:22px}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;min-width:220px;box-shadow:var(--shadow)}
+    .search input{border:none;outline:none;width:220px}
+    .profile{display:flex;align-items:center;gap:12px}
+    .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#93c5fd,#d8b4fe);display:grid;place-items:center;color:#0b1220;font-weight:700}
 
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
+    /* Cards */
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .col-4{grid-column:span 4}
+    .col-8{grid-column:span 8}
+    .col-12{grid-column:span 12}
+    @media (max-width: 1100px){.col-4,.col-8{grid-column:span 12}}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+    .kpi{display:flex;align-items:center;justify-content:space-between}
+    .kpi .value{font-size:28px;font-weight:800}
+    .chip{background:var(--chip);color:var(--brand-600);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
 
-        table,
-        th,
-        td {
-            border: 1px solid #ddd;
-        }
+    /* Student Info table */
+    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--border)}
+    thead th{background:#f8fafc;text-align:left;font-size:13px;color:#475569}
+    tbody tr:last-child td{border-bottom:none}
 
-        th,
-        td {
-            padding: 12px;
-            text-align: left;
-        }
+    /* Section headers */
+    h2{margin:8px 0 12px}
+    h3{margin:0 0 10px}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 
-        th {
-            background-color: #f8f8f8;
-        }
+    /* Fee tables + accordions */
+    .accordion{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .acc-item+.acc-item{border-top:1px solid var(--border)}
+    .acc-btn{width:100%;background:#f8fafc;border:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;font-weight:700}
+    .acc-body{padding:0 16px 16px;background:var(--card)}
 
-        .pay-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .row-right{text-align:right}
+    .totals{font-weight:700;background:#fcfcff}
+    .muted{color:var(--muted)}
 
-        .pay-btn:hover {
-            background-color: #218838;
-        }
-    </style>
+    /* Actions */
+    .actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .totals-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .pay-btn{background:var(--brand);color:#fff;padding:12px 18px;border:none;border-radius:12px;cursor:pointer;font-weight:700;box-shadow:0 8px 18px rgba(37,99,235,.25);transition:.2s}
+    .pay-btn:hover{background:var(--brand-600)}
+    .pay-btn[disabled]{opacity:.5;cursor:not-allowed;box-shadow:none}
+
+    input[type="tel"], .select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px}
+
+    /* Sticky summary */
+    .summary{position:sticky;top:12px}
+    .list{display:flex;flex-direction:column;gap:8px}
+    .list .item{display:flex;align-items:center;justify-content:space-between;border:1px dashed var(--border);padding:10px;border-radius:12px}
+
+    /* Select-all checkbox style */
+    .select-all{appearance:none;width:18px;height:18px;border:1px solid #9ca3af;border-radius:4px;display:inline-grid;place-content:center;cursor:pointer}
+    .select-all:checked{background:var(--brand);border-color:var(--brand)}
+    .select-all:checked::after{content:"✓";color:#fff;font-size:14px;line-height:1}
+
+    /* Toast */
+    .toast{position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}
+    .toast.show{opacity:1;transform:translateY(0)}
+
+    /* Footer */
+    footer{color:var(--muted);text-align:center;margin:20px 0}
+  </style>
 </head>
-
 <body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3l9 4-9 4-9-4 9-4zm0 8l9 4-9 4-9-4"/></svg>
+        <span>Student Portal</span>
+      </div>
+      <nav class="nav">
+        <a class="active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M3 12l2-2 4 4 8-8 4 4"/></svg>Dashboard</a>
+        <a href="#fees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 8c-2.21 0-4 1.79-4 4h8c0-2.21-1.79-4-4-4z"/><path stroke-width="2" d="M6 12v6h12v-6"/></svg>Fees</a>
+        <a href="#courses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 6h16M4 12h10M4 18h16"/></svg>Courses</a>
+        <a href="#documents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M7 3h8l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>Documents</a>
+        <a href="#support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".5"/></svg>Support</a>
+      </nav>
+      <div class="spacer"></div>
+      <div class="mini-card">
+        <div class="muted" style="font-size:12px;margin-bottom:6px">Current Term</div>
+        <div style="font-weight:800">Semester VI</div>
+        <div class="chip" style="margin-top:8px;display:inline-block">Due: ₹ 1,01,000</div>
+      </div>
+    </aside>
 
-    <header>
-        <h1>Student Academic Fees</h1>
-    </header>
-    <div class="container">
-        <!-- Student Information Section -->
-        <h2>Student Information</h2>
-        <table class="student-info">
-            <tr>
-                <th>Student Name</th>
-                <td>GrayQuest Demo Student</td> <!-- Replace with actual student name -->
-            </tr>
-            <tr>
-                <th>Student ID</th>
-                <td>GQ_DEMO_1234</td> <!-- Replace with actual student ID -->
-            </tr>
-            <tr>
-                <th>Course</th>
-                <td>Bachelor of Science in Computer Science</td> <!-- Replace with actual course -->
-            </tr>
-            <tr>
-                <th>Year of Study</th>
-                <td>3rd Year</td> <!-- Replace with actual year -->
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>GrayQuest.demo@example.com</td> <!-- Replace with actual email -->
-            </tr>
-            <tr>
+    <!-- Main -->
+    <main class="main">
+      <div class="topbar">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke="#94a3b8" stroke-width="2" d="M21 21l-3.5-3.5"/></svg>
+          <input placeholder="Search in portal"/>
+        </div>
+        <div class="profile">
+          <div class="chip">Student</div>
+          <div class="avatar">DS</div>
+        </div>
+      </div>
+
+      <!-- KPI Row -->
+      <section class="grid" style="margin-bottom:12px">
+        <div class="card col-4 kpi">
+          <div>
+            <div class="muted">Outstanding This Year</div>
+            <div class="value">₹ <span id="kpi-outstanding">0</span></div>
+          </div>
+          <div class="chip">Live</div>
+        </div>
+        <div class="card col-4 kpi">
+          <div>
+            <div class="muted">Paid to Date</div>
+            <div class="value">₹ 0</div>
+          </div>
+          <svg width="42" height="42" viewBox="0 0 42 42"><circle cx="21" cy="21" r="18" stroke="#e5e7eb" stroke-width="6" fill="none"/><circle cx="21" cy="21" r="18" stroke="#10b981" stroke-width="6" fill="none" stroke-dasharray="50 200" stroke-linecap="round" transform="rotate(-90 21 21)"/></svg>
+        </div>
+        <div class="card col-4 kpi">
+          <div>
+            <div class="muted">Upcoming Due</div>
+            <div class="value">₹ 0</div>
+          </div>
+          <div class="chip" style="background:#ecfeff;color:#155e75">0 items</div>
+        </div>
+      </section>
+
+      <!-- Student Info + Summary -->
+      <section class="grid">
+        <div class="card col-8">
+          <div class="section-head">
+            <h2>Student Information</h2>
+            <span class="chip">Verified</span>
+          </div>
+          <table>
+            <tbody>
+              <tr><th>Student Name</th><td>GrayQuest Demo Student</td></tr>
+              <tr><th>Student ID</th><td>GQ_DEMO_1234</td></tr>
+              <tr><th>Course</th><td>Bachelor of Science in Computer Science</td></tr>
+              <tr><th>Year of Study</th><td>3rd Year</td></tr>
+              <tr><th>Email</th><td>GrayQuest.demo@example.com</td></tr>
+              <tr>
                 <th>Contact Number</th>
-                <td>
-                    <input 
-                        type="tel" 
-                        id="contact-number" 
-                        value="" 
-                        pattern="[+][0-9]{1,3}[ ]?[0-9]{10}" 
-                        required 
-                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"
-                    />
-                </td>
-            </tr>
-        </table>
-        <div class="container">
-            <h2>Fee Details</h2>
-            <table>
-                <tr>
-                    <th>Fee Description</th>
-                    <th>Amount</th>
-                </tr>
-                <tr>
-                    <td>Tuition Fee</td>
-                    <td>50000</td>
-                </tr>
-                <tr>
-                    <td>Library Fee</td>
-                    <td>10000</td>
-                </tr>
-                <tr>
-                    <td>Lab Fee</td>
-                    <td>15000</td>
-                </tr>
-                <tr>
-                    <td>Sports Fee</td>
-                    <td>5000</td>
-                </tr>
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td><strong>80000</strong></td>
-                </tr>
-            </table>
-
-            <button id="gq-button" class="gq-button">Pay Fees</button>
+                <td><input type="tel" id="contact-number" value="" placeholder="+91 98XXXXXXXX" pattern="[+][0-9]{1,3}[ ]?[0-9]{10}" required/></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="muted" style="margin-top:8px;font-size:12px">Tip: Use the checkboxes below to select what you want to pay now. Totals update in real-time.</p>
         </div>
 
-        <footer>
-            <p>&copy; 2024 Student Portal. All rights reserved.</p>
-        </footer>
-        <script>
-            (function (g, q, s, d, k) {
-                var loader = function () {
-                    var gq, id = "gqerp-jssdk"; if (q.getElementById(id)) { return; }
-                    gq = q.createElement(s); gq.async = true; gq.type = "text/javascript";
-                    gq.src = d; var sc = q.getElementsByTagName("script")[0];
-                    sc.parentNode.insertBefore(gq, sc);
-                };
-                g.addEventListener ? g.addEventListener(
-                    "load", loader, false) : g.attachEvent("onload", loader);
-            })(window, document, "script", "https://erp-sdk-stage.graydev.tech/v1.1/gqerp-sdk.min.js?v=latest");
-        
-            // Function to dynamically retrieve the current contact number
-            function getContactNumber() {
-                const contactNumber = document.getElementById('contact-number').value;
-                console.log('Current Contact Number:', contactNumber);
-                return contactNumber;
-            }
-        
-            // Function to dynamically set a new contact number
-            function setContactNumber(newNumber) {
-                const contactInput = document.getElementById('contact-number');
-                contactInput.value = newNumber;
-                console.log('Updated Contact Number to:', newNumber);
-            }
-        
-            // Set Options to Initiate Popup
-            document.getElementById('gq-button').onclick = function (e) {
-                const currentContactNumber = getContactNumber(); // Retrieve the contact number dynamically
-        
-                GqErpSDK.setOptions({
-                    env: "staging",
-                    auth: {
-                        client_id: 'GQ-2f082e1b-f298-4591-9255-ff1d099ed1b7',
-                        client_secret: 'a15de72c-1613-4bb8-9f74-1dd74deadde2',
-                        api_key: '43cfb3ca-152f-4b72-832b-bd2e6126a4d7'
-                    },
-                    student_id: "GQ_SUPER_KID_12",
-                    reference_id: "SUPER_KID_ERP34",
-                    pp_config: {
-                        slug: 'ggg-gis-epa',
-                    },
-                    customer_mobile: currentContactNumber, // Use dynamically retrieved contact number
-                    fee_headers: {
-                        "Admission_fee": 80000
-                    },
-                    "student_details": {
-                        "student_first_name": "Shanaya",
-                        "student_middle_name": "Darshan",
-                        "student_last_name": "Singh",
-                        "student_type": "NEW"
-                    },
-                    "customer_details": {
-                        "customer_first_name": "Darshan",
-                        "customer_middle_name": "Subhash",
-                        "customer_last_name": "Singh",
-                        "customer_email": "darshan@gmail.com",
-                        "customer_marital_status": "MARRIED",
-                        "customer_gender": "MALE",
-                        "customer_dob": "1997-05-05",
-                        "customer_employment_type": "SALARIED"
-                    },
-                    "kyc_details": {
-                        "pan_number": "AAAPA0000A"
-                    },
-                    "residential_details": {
-                        "residential_addr_line_1": "A-23, Palace",
-                        "residential_addr_line_2": "Anime World",
-                        "residential_landmark": "Anime",
-                        "residential_type": "RENTED",
-                        "residential_period": "LESS THAN 2 YEARS",
-                        "residential_pincode": "400065",
-                        "residential_city": "Mumbai",
-                        "residential_state": "Maharashtra",
-                        "residential_country": "India"
-                    },
-                    "employment_details": {
-                        "income_type": "SALARIED",
-                        "employer_name": "GrayQuest",
-                        "net_monthly_salary": "123456",
-                        "work_experience": "5-10 YEARS",
-                    },
-                    "notes": {
-                        "unique_number": "ecd90e5d-02fb-4150-bb59-2d51800a5477",
-                        "semster_type": "sem1 ,sem2"
-                    }
-                });
-                GqErpSDK.render();
-            };
-        
-            // DEPRECATED
-            document.addEventListener('onGqPopupClose', (e) => {
-                console.log('GQ Popup close = ', e);
-                console.log(JSON.stringify(e));
-                var eventTY = e['gqData']['data']['event'];
-                if (eventTY == 'emi.form.submitted') {
-                    window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/Loan_Form_Subbmitted.html';
-                }
-            });
-        
-            // RECOMMENDED EVENTS
-            document.addEventListener('onGqError', (e) => {
-                console.log('GQ Error = ', e);
-                window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/PaymentFail.html';
-            });
-        
-            document.addEventListener('onGqSuccess', (e) => {
-                console.log('GQ SUCCESS = ', e);
-                console.log(JSON.stringify(e));
-                var eventTY = e['gqData']['data']['event'];
-                if (eventTY == 'dt.payment.captured') {
-                    window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/success.html';
-                }
-            });
-        
-            document.addEventListener('onGqActivity', (e) => {
-                console.log('GQ ACTIVITY = ', e);
-            });
-        
-            // Example usage of setContactNumber
-            setContactNumber('989XXXXXX9'); // Dynamically update the contact number
-        </script>        
-</body>
+        <div class="card col-4 summary">
+          <div class="section-head">
+            <h2>Pay Summary</h2>
+            <span class="chip">Auto-updates</span>
+          </div>
+          <div class="list" id="summary-list"></div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:20px">
+            <span>Grand Total</span>
+            <span>₹ <span id="grand-total">0</span></span>
+          </div>
+          <button id="gq-button" class="pay-btn" style="margin-top:12px" disabled>Pay Selected</button>
+          <div class="muted" style="font-size:12px;margin-top:8px">Payments are powered by GrayQuest.</div>
+        </div>
+      </section>
 
+      <!-- Fees Section -->
+      <section id="fees" class="grid" style="margin-top:16px">
+        <div class="card col-12">
+          <div class="section-head"><h2>Fee Details</h2><span class="chip">Tick items to pay now</span></div>
+
+          <div class="accordion" id="acc-fees">
+            <!-- Semester 1 -->
+            <div class="acc-item">
+              <button class="acc-btn" data-acc="sem1">
+                <span>Semester 1</span>
+                <label class="muted" title="Toggle all Semester 1 items" style="display:flex;align-items:center;gap:8px">
+                  <input type="checkbox" class="select-all" id="selectAll-sem1"> Select all
+                </label>
+              </button>
+              <div class="acc-body">
+                <table>
+                  <thead>
+                    <tr><th style="width:48px"></th><th>Fee Description</th><th class="row-right">Amount (₹)</th></tr>
+                  </thead>
+                  <tbody id="tbody-sem1">
+                    <tr><td><input type="checkbox" class="fee" data-amount="30000" data-sem="sem1" data-label="Tuition (Sem 1)"></td><td>Tuition</td><td class="row-right">30,000</td></tr>
+                    <tr><td><input type="checkbox" class="fee" data-amount="10000" data-sem="sem1" data-label="Transport (Sem 1)"></td><td>Transport</td><td class="row-right">10,000</td></tr>
+                    <tr><td><input type="checkbox" class="fee" data-amount="10000" data-sem="sem1" data-label="Hostel (Sem 1)"></td><td>Hostel</td><td class="row-right">10,000</td></tr>
+                    <tr class="totals"><td></td><td>Total (Sem 1)</td><td class="row-right" id="total-sem1">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Semester 2 -->
+            <div class="acc-item">
+              <button class="acc-btn" data-acc="sem2">
+                <span>Semester 2</span>
+                <label class="muted" title="Toggle all Semester 2 items" style="display:flex;align-items:center;gap:8px">
+                  <input type="checkbox" class="select-all" id="selectAll-sem2"> Select all
+                </label>
+              </button>
+              <div class="acc-body">
+                <table>
+                  <thead>
+                    <tr><th style="width:48px"></th><th>Fee Description</th><th class="row-right">Amount (₹)</th></tr>
+                  </thead>
+                  <tbody id="tbody-sem2">
+                    <tr><td><input type="checkbox" class="fee" data-amount="100" data-sem="sem2" data-label="Picnic Fee (Sem 2)"></td><td>Picnic Fee</td><td class="row-right">100</td></tr>
+                    <tr><td><input type="checkbox" class="fee" data-amount="30000" data-sem="sem2" data-label="Tuition (Sem 2)"></td><td>Tuition</td><td class="row-right">30,000</td></tr>
+                    <tr><td><input type="checkbox" class="fee" data-amount="10000" data-sem="sem2" data-label="Transport (Sem 2)"></td><td>Transport</td><td class="row-right">10,000</td></tr>
+                    <tr><td><input type="checkbox" class="fee" data-amount="10000" data-sem="sem2" data-label="Hostel (Sem 2)"></td><td>Hostel</td><td class="row-right">10,000</td></tr>
+                    <tr class="totals"><td></td><td>Total (Sem 2)</td><td class="row-right" id="total-sem2">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:14px">
+            <div class="totals-bar">
+              <span style="font-weight:800">Grand Total Selected: ₹ <span id="grand-total-inline">0</span></span>
+              <span class="muted" style="font-size:12px">(updates as you tick/untick)</span>
+            </div>
+            <button id="pay-inline" class="pay-btn" disabled>Pay Selected</button>
+          </div>
+        </div>
+      </section>
+
+      <footer>© 2025 Student Portal. All rights reserved.</footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Load GrayQuest SDK with a resilient loader -->
+  <script>
+    (function loadGQ(){
+      const id = 'gqerp-jssdk';
+      if(document.getElementById(id)) return;
+      const s = document.createElement('script');
+      s.id = id; s.async = true; s.type='text/javascript';
+      s.src = 'https://erp-sdk-stage.graydev.tech/v1.1/gqerp-sdk.min.js?v=latest';
+      s.onload = () => { window.__gqLoaded = true; toast('GrayQuest SDK loaded'); };
+      s.onerror = () => { window.__gqLoaded = false; toast('GrayQuest SDK failed to load', 'danger'); };
+      document.head.appendChild(s);
+    })();
+  </script>
+
+  <script>
+    // --- Helpers ---
+    const fmt = (n) => Number(n || 0).toLocaleString('en-IN');
+    const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    const qs  = (sel, root=document) => root.querySelector(sel);
+    const toastEl = document.getElementById('toast');
+    function toast(msg,type){
+      toastEl.textContent = msg;
+      toastEl.style.background = type==='danger'? '#b91c1c' : '#111827';
+      toastEl.classList.add('show');
+      setTimeout(()=>toastEl.classList.remove('show'), 2200);
+    }
+
+    function getContactNumber(){
+      const v = document.getElementById('contact-number').value || '';
+      return v;
+    }
+    function setContactNumber(newNumber){
+      document.getElementById('contact-number').value = newNumber;
+    }
+
+    function sumSelected(semester=null){
+      const sel = semester ? qsa(`input.fee:checked[data-sem="${semester}"]`) : qsa('input.fee:checked');
+      return sel.reduce((acc,cb)=> acc + Number(cb.dataset.amount||0),0);
+    }
+
+    function selectionLabels(){
+      return qsa('input.fee:checked').map(cb => ({ label: cb.dataset.label, amount: Number(cb.dataset.amount) }));
+    }
+
+    function renderSummary(){
+      const sem1 = sumSelected('sem1');
+      const sem2 = sumSelected('sem2');
+      qs('#total-sem1').textContent = fmt(sem1);
+      qs('#total-sem2').textContent = fmt(sem2);
+      const grand = sem1 + sem2;
+      qs('#grand-total').textContent = fmt(grand);
+      qs('#grand-total-inline').textContent = fmt(grand);
+      qs('#kpi-outstanding').textContent = fmt(grand);
+
+      // enable/disable buttons
+      const disabled = grand <= 0;
+      qs('#gq-button').disabled = disabled;
+      qs('#pay-inline').disabled = disabled;
+
+      // render list
+      const list = qs('#summary-list');
+      list.innerHTML = '';
+      selectionLabels().forEach(({label,amount})=>{
+        const el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = `<span>${label}</span><strong>₹ ${fmt(amount)}</strong>`;
+        list.appendChild(el);
+      });
+    }
+
+    // change handlers
+    document.addEventListener('change', (e)=>{
+      if(e.target.matches('input.fee')) renderSummary();
+    });
+
+    // Select all binding
+    function bindSelectAll(semId){
+      const box = document.getElementById(`selectAll-${semId}`);
+      box.addEventListener('change', ()=>{
+        qsa(`input.fee[data-sem="${semId}"]`).forEach(cb => cb.checked = box.checked);
+        renderSummary();
+      });
+    }
+    bindSelectAll('sem1');
+    bindSelectAll('sem2');
+
+    // Accordion behavior
+    qsa('.acc-btn').forEach(btn=>{
+      const id = btn.dataset.acc;
+      const body = btn.parentElement.querySelector('.acc-body');
+      body.style.display = 'block'; // expanded by default
+      btn.addEventListener('click', (ev)=>{
+        if(ev.target.closest('label')) return; // ignore when toggling select-all
+        body.style.display = body.style.display==='none' ? 'block' : 'none';
+      });
+    });
+
+    // Initialize
+    renderSummary();
+    setContactNumber('989XXXXXX9');
+
+    // --- Payment trigger (kept consistent with your previous config) ---
+    function payNow(){
+      const totalSelected = sumSelected();
+      if(totalSelected <= 0){ toast('Please select at least one fee item'); return; }
+
+      const currentContactNumber = getContactNumber();
+      if(!/^\+?\d[\d\s]{9,}$/.test(currentContactNumber)){
+        toast('Please enter a valid contact number', 'danger');
+        return;
+      }
+
+      if(!window.GqErpSDK){ toast('SDK not ready. Please try again in a moment.', 'danger'); return; }
+
+      GqErpSDK.setOptions({
+        env: "staging",
+        auth: {
+          client_id: 'GQ-2f082e1b-f298-4591-9255-ff1d099ed1b7',
+          client_secret: 'a15de72c-1613-4bb8-9f74-1dd74deadde2',
+          api_key: '43cfb3ca-152f-4b72-832b-bd2e6126a4d7'
+        },
+        student_id: "GQ_SUPER_KID_12",
+        reference_id: "SUPER_KID_ERP34",
+        pp_config: { slug: 'ggg-gis-epa' },
+        customer_mobile: currentContactNumber,
+
+        // Send the sum of all selected items here
+        fee_headers: { "Admission_fee": totalSelected },
+
+        student_details: {
+          student_first_name: "Shanaya",
+          student_middle_name: "Darshan",
+          student_last_name: "Singh",
+          student_type: "NEW"
+        },
+        customer_details: {
+          customer_first_name: "Darshan",
+          customer_middle_name: "Subhash",
+          customer_last_name: "Singh",
+          customer_email: "darshan@gmail.com",
+          customer_marital_status: "MARRIED",
+          customer_gender: "MALE",
+          customer_dob: "1997-05-05",
+          customer_employment_type: "SALARIED"
+        },
+        kyc_details: { pan_number: "AAAPA0000A" },
+        residential_details: {
+          residential_addr_line_1: "A-23, Palace",
+          residential_addr_line_2: "Anime World",
+          residential_landmark: "Anime",
+          residential_type: "RENTED",
+          residential_period: "LESS THAN 2 YEARS",
+          residential_pincode: "400065",
+          residential_city: "Mumbai",
+          residential_state: "Maharashtra",
+          residential_country: "India"
+        },
+        employment_details: {
+          income_type: "SALARIED",
+          employer_name: "GrayQuest",
+          net_monthly_salary: "123456",
+          work_experience: "5-10 YEARS",
+        },
+        notes: {
+          unique_number: "ecd90e5d-02fb-4150-bb59-2d51800a5477",
+          semster_type: (() => {
+            const s = new Set(qsa('input.fee:checked').map(cb => cb.dataset.sem));
+            const out = [];
+            if (s.has('sem1')) out.push('sem1');
+            if (s.has('sem2')) out.push('sem2');
+            return out.join(', ') || 'none';
+          })()
+        }
+      });
+
+      GqErpSDK.render();
+    }
+
+    document.getElementById('gq-button').addEventListener('click', payNow);
+    document.getElementById('pay-inline').addEventListener('click', payNow);
+
+    // SDK callbacks
+    document.addEventListener('onGqError', (e) => {
+      console.log('GQ Error = ', e);
+      toast('Payment failed', 'danger');
+      window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/PaymentFail.html';
+    });
+
+    document.addEventListener('onGqSuccess', (e) => {
+      console.log('GQ SUCCESS = ', e);
+      const eventTY = e?.gqData?.data?.event;
+      if (eventTY === 'dt.payment.captured') {
+        toast('Payment successful!');
+        window.location.href = 'https://darshansingh797769.github.io/Personal_Demo_GQ/success.html';
+      }
+    });
+
+    document.addEventListener('onGqActivity', (e) => {
+      console.log('GQ ACTIVITY = ', e);
+    });
+  </script>
+</body>
 </html>
